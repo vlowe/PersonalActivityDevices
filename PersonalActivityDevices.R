@@ -23,7 +23,7 @@ CreatePlot <- function(x, y, position){
   #   position: Location of the legend
   png(paste(x, "_", y, ".png", sep = ""))
   plot(data.frame(data[x], data[y]), col = data$Class,
-       main = paste(x, " VS ", y, sep=""), 
+       main = paste(x, " VS ", y, sep = ""), 
        xlab = x,
        ylab = y)
   legend(position, inset = 0.05, legend = c("A", "B", "C", "D", "E"),
@@ -40,8 +40,8 @@ registerDoParallel(cl)
 set.seed(123)  # Arbitrarily chosen
 
 # Read data
-data <- read.csv(file='Dataset.csv', header=T, sep=',', 
-                  na.strings=c("#DIV/0!", "NA"))
+data <- read.csv(file = 'Dataset.csv', header = T, sep = ',', 
+                  na.strings = c("#DIV/0!", "NA"))
 
 # Fix up typos in header names
 names(data) <- gsub("picth", "pitch", names(data))
@@ -56,7 +56,7 @@ valid.data <- data[complete.columns]
 consistent.data <- (valid.data[c(2, 8:length(valid.data))])
 
 # Set training data to 70% and test data to 30%
-ind <- sample(2, nrow(consistent.data), replace=TRUE, prob=c(0.7, 0.3))
+ind <- sample(2, nrow(consistent.data), replace = TRUE, prob = c(0.7, 0.3))
 train.data <- consistent.data[ind == 1, ]
 test.data <- consistent.data[ind == 2, ]
 
@@ -69,7 +69,7 @@ data.rf <- foreach(ntree = rep(25, kNumCores), .combine = combine,
 confusion.matrix.train <- table(predict(data.rf), train.data$Class)
 
 # Test model
-class.pred <- predict(data.rf, newdata=test.data)
+class.pred <- predict(data.rf, newdata = test.data)
 confusion.matrix <- table(class.pred, test.data$Class)
 
 # Calculate results
